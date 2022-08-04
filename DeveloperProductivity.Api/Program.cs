@@ -1,3 +1,5 @@
+using DeveloperProductivity.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,12 +37,16 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-//app.MapPost("/reportincorrectconditions",)
+app.MapGet("/currentconditions", () =>
+{
+    var conditions = new WeatherForecast
+    (
+        DateTime.Now,
+        Random.Shared.Next(-20,55),
+        summaries[Random.Shared.Next(summaries.Length)]
+    );
+
+    return conditions;
+});
 
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public Guid ForecastId = Guid.NewGuid();
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
