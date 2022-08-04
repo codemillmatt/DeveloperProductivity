@@ -1,4 +1,8 @@
 ﻿namespace DeveloperProductivity.Models
 {
-    public record IncorrectConditionsReport(Guid forecastId);
+    public class IncorrectConditionsReport
+    {
+        public Guid ForecastId { get; set; }
+    }
+
 }
