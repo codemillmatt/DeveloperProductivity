@@ -47,6 +47,6 @@ app.MapGet("/currentconditions", () =>
     );
 
     return conditions;
-});
+}).WithName("GetCurrentConditions");
 
 app.Run();
