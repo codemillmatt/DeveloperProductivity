@@ -61,7 +61,9 @@ app.MapGet("/currentconditions", () =>
 app.MapPost("/reportincorrectconditions", async (IncorrectConditionsReport report) =>
 {
     var queueServiceClient = app.Services.GetService<QueueServiceClient>();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
     var queueClient = queueServiceClient.GetQueueClient("incorrect-conditions-queue");
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
     await queueClient.CreateIfNotExistsAsync();
 
