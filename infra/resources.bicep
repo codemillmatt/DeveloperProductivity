@@ -15,6 +15,17 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   tags: tags
 }
 
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: '${resourceToken}-app-insights'
+  kind: 'web'
+  location: location
+  tags: tags
+  properties: {
+    Application_Type: 'web'
+    IngestionMode: 'ApplicationInsights'
+  }
+}
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   location: location
   name: '${resourceToken}-app-plan'
@@ -45,6 +56,7 @@ resource web 'Microsoft.Web/sites@2022-03-01' = {
       'SCM_DO_BUILD_DURING_DEPLOYMENT': 'true'
       'storage-connection-string:queue': 'DefaultEndpointsProtocol=https;AccountName=${storage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storage.id, storage.apiVersion).keys[0].value}'
       'storage-connection-string:blob': 'DefaultEndpointsProtocol=https;AccountName=${storage.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storage.id, storage.apiVersion).keys[0].value}'
+      'APPINSIGHTS_INSTRUMENTATIONKEY': appInsights.properties.InstrumentationKey
     }
   }
 }
